@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/core/theme/app_theme.dart';
 import 'package:weather_app/features/onboarding/screen/onboarding_screen.dart';
 
 class WeatherApp extends StatelessWidget {
@@ -6,9 +7,10 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnboardingScreen(),
+      theme: AppTheme.lightTheme,
+      home: const OnboardingScreen(),
     );
   }
 }
