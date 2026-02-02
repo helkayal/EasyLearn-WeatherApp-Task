@@ -23,6 +23,15 @@ class OnboardingButton extends StatelessWidget {
               Theme.of(context).colorScheme.onTertiary,
             ],
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.4),
+              blurRadius: 5,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Text(
           "let's start",
