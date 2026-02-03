@@ -6,21 +6,13 @@ class BottomWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Stack(
       children: [
         Positioned(
-          bottom: -size.height * 0.55,
-          left: -size.width * .45,
-          right: -size.width * .45,
-          child: Container(
-            height: size.height * .9,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Theme.of(context).colorScheme.onSecondary,
-            ),
-          ),
+          bottom: -60,
+          left: 0,
+          right: 0,
+          child: Image.asset("assets/images/oval.png"),
         ),
         const Positioned(
           bottom: 40,
