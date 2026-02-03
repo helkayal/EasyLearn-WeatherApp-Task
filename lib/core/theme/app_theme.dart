@@ -38,6 +38,7 @@ class AppTheme {
       tertiary: AppColors.tealColor,
       onTertiary: AppColors.lightTealColor,
       surface: AppColors.darkPurpleColor,
+      onSurface: AppColors.greyColor,
     ),
   );
 }
