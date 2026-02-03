@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/features/weather/screens/weather_setails.dart';
 
 class CityCard extends StatelessWidget {
   final String city;
   final String temp;
   final String aqi;
   final String range;
-  final Widget navigateTo;
 
   const CityCard({
     super.key,
@@ -13,18 +13,17 @@ class CityCard extends StatelessWidget {
     required this.temp,
     required this.aqi,
     required this.range,
-    required this.navigateTo,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: InkWell(
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => navigateTo),
+            MaterialPageRoute(builder: (context) => WeatherDetails(city: city)),
           );
         },
         child: Container(
