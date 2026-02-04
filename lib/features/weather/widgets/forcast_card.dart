@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
-import 'package:weather_app/features/models/daily_forecast_model.dart';
+import 'package:weather_app/features/models/forecast_model.dart';
 import 'package:weather_app/features/weather/widgets/forcast_row.dart';
 
 class ForecastCard extends StatelessWidget {
-  final List<DailyForecastModel> forecast;
+  final ForecastModel forecast;
   const ForecastCard({super.key, required this.forecast});
 
   @override
@@ -43,10 +43,10 @@ class ForecastCard extends StatelessWidget {
                 child: ListView.separated(
                   padding: EdgeInsets.all(0),
                   itemBuilder: (context, index) {
-                    return ForecastRow(model: forecast[index]);
+                    return ForecastRow(model: forecast.forecastDays[index]);
                   },
                   separatorBuilder: (context, index) => const Gap(8),
-                  itemCount: forecast.length,
+                  itemCount: forecast.forecastDays.length,
                 ),
               ),
             ],
