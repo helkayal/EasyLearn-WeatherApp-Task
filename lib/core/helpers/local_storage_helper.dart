@@ -22,7 +22,7 @@ class LocalStorageHelper {
     return _prefs.getString(_lastCityKey);
   }
 
-  /* ---------------- City Images (MAX 10, ORDERED) ---------------- */
+  /* ---------------- City Images (MAX 5, ORDERED) ---------------- */
 
   static Future<void> saveCityImage({
     required String city,
@@ -79,6 +79,27 @@ class LocalStorageHelper {
 
   static Future<void> clearCityImages() async {
     await _prefs.remove(_cityImagesKey);
+  }
+
+  static Future<void> deleteCity(String city) async {
+    final raw = _prefs.getString(_cityImagesKey);
+    if (raw == null) return;
+
+    List<Map<String, dynamic>> list = List<Map<String, dynamic>>.from(
+      jsonDecode(raw),
+    );
+
+    list.removeWhere(
+      (e) => e['city'].toString().toLowerCase() == city.toLowerCase(),
+    );
+
+    await _prefs.setString(_cityImagesKey, jsonEncode(list));
+
+    /// If deleted city was last city → clear it
+    final lastCity = getLastCity();
+    if (lastCity?.toLowerCase() == city.toLowerCase()) {
+      await _prefs.remove(_lastCityKey);
+    }
   }
 
   /* ---------------- Debug Helper ---------------- */
