@@ -17,7 +17,7 @@ class ApiUtils {
     weatherList.removeWhere(
       (e) => e.location.name.toLowerCase() == city.toLowerCase(),
     );
-    weatherList.add(weather);
+    weatherList.insert(0, weather);
   }
 
   static Future<WeatherResponseModel> fetchCityWeatherOnly({
@@ -41,6 +41,6 @@ class ApiUtils {
       (e) => e.location.name.toLowerCase() == city.toLowerCase(),
     );
 
-    weatherList.add(weather);
+    weatherList.insert(0, weather);
   }
 }

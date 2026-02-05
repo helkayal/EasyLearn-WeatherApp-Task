@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/core/helpers/local_storage_helper.dart';
 import 'package:weather_app/features/models/weather_response_model.dart';
 import 'package:weather_app/features/utils/api_utils.dart';
 import 'package:weather_app/features/weather/widgets/weather_view.dart';
@@ -18,6 +19,7 @@ class _WeatherDetailsState extends State<WeatherDetails> {
   @override
   void initState() {
     super.initState();
+    // debugPrint(LocalStorageHelper.getAll().toString());
     _loadWeather();
   }
 
@@ -33,6 +35,9 @@ class _WeatherDetailsState extends State<WeatherDetails> {
         await ApiUtils.loadCityWeather(city: widget.city);
         model = weatherList.firstWhere((e) => e.location.name == widget.city);
       }
+
+      /// 3️⃣ Save as last visited city
+      await LocalStorageHelper.saveLastCity(widget.city);
     } catch (e) {
       debugPrint('Weather load error: $e');
     } finally {

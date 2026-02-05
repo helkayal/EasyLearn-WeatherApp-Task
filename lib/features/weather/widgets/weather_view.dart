@@ -20,7 +20,6 @@ class WeatherView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint(LocalStorageHelper.getAll().toString());
     final storedImage = LocalStorageHelper.getCityImage(model.location.name);
 
     final imageProvider = backgroundImage != null

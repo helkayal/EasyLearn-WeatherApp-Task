@@ -20,7 +20,7 @@ class _CityListState extends State<CityList> {
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         itemCount: weatherList.length,
-        separatorBuilder: (_, __) => const Gap(10),
+        separatorBuilder: (_, _) => const Gap(10),
         itemBuilder: (context, index) {
           final cityModel = weatherList[index];
           final cityName = cityModel.location.name;
