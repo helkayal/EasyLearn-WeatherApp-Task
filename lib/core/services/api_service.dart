@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:weather_app/core/helpers/api_helper.dart';
+import 'package:weather_app/core/helpers/local_storage_helper.dart';
 import 'package:weather_app/features/models/weather_response_model.dart';
 
 class ApiService {
@@ -23,11 +25,17 @@ class ApiService {
   /////////////////////////////////////////////////////////
 
   static const pexelsApiBaseUrl = 'https://api.pexels.com/v1/';
+  static const pexelsApiKey =
+      'agEr9PbnwZBH1EoJ8oACkeuR04ftDJMGeoA3o9A9evY3W4wvUBU68OWE';
 
   static Future<String?> getCityImage(String city) async {
+    final cached = LocalStorageHelper.getCityImage(city);
+    if (cached != null) return cached;
+
     final response = await ApiHelper.dio.get(
       '${pexelsApiBaseUrl}search',
       queryParameters: {'query': city, 'per_page': 1},
+      options: Options(headers: {'Authorization': pexelsApiKey}),
     );
 
     final photos = response.data['photos'] as List;

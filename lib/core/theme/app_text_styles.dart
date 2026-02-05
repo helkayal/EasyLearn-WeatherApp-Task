@@ -40,8 +40,8 @@ class AppTextStyles {
     color: AppColors.whiteColor,
   );
 
-  static const TextStyle white22Bold = TextStyle(
-    fontSize: 22,
+  static const TextStyle white18Bold = TextStyle(
+    fontSize: 18,
     fontWeight: FontWeight.bold,
     color: AppColors.whiteColor,
   );

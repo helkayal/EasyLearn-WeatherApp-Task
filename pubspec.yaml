@@ -13,6 +13,7 @@ dependencies:
   flutter_svg: ^2.2.3
   gap: ^3.0.1
   google_fonts: ^8.0.0
+  intl: ^0.20.2
   liquid_glass_renderer: ^0.2.0-dev.4
   shared_preferences: ^2.5.4
 

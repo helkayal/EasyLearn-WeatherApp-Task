@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/features/weather/screens/weather_setails.dart';
+import 'package:weather_app/features/weather/screens/weather_details.dart';
 
 class CityCard extends StatelessWidget {
   final String city;

@@ -45,7 +45,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/core/helpers/local_storage_helper.dart';
 import 'package:weather_app/features/search/screen/search_screen.dart';
-import 'package:weather_app/features/weather/screens/weather_setails.dart';
+import 'package:weather_app/features/weather/screens/weather_details.dart';
 
 class OnboardingButton extends StatelessWidget {
   const OnboardingButton({super.key});

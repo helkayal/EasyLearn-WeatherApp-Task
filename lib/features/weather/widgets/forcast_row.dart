@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/features/models/forecast_day_model.dart';
 
 class ForecastRow extends StatelessWidget {
@@ -9,20 +10,21 @@ class ForecastRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dayName = DateFormat('EEE').format(model.date);
+
     return Row(
       children: [
-        Text(
-          model.day.condition.icon,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        Image.network(model.day.condition.icon, width: 40, height: 40),
         const Gap(8),
-        Text(
-          '${model.day} ${model.day.condition.text}',
-          style: Theme.of(context).textTheme.titleMedium,
+        Expanded(
+          child: Text(
+            '$dayName. ${model.day.condition.text}',
+            style: Theme.of(context).textTheme.titleMedium,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
-        const Spacer(),
         Text(
-          '${model.day.maxTempC}° / ${model.day.maxTempC}°',
+          '${model.day.maxTempC}° / ${model.day.minTempC}°',
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ],

@@ -20,32 +20,25 @@ class ForecastCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    '5-day forecast',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Spacer(),
-                  Text(
-                    'More details >',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ],
+              Text(
+                '3-day forecast',
+                style: Theme.of(context).textTheme.titleLarge,
               ),
 
-              const Gap(16),
+              const Gap(8),
 
               SizedBox(
-                height: 150,
+                height: 140,
                 width: MediaQuery.of(context).size.width * .8,
                 child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
                   padding: EdgeInsets.all(0),
                   itemBuilder: (context, index) {
                     return ForecastRow(model: forecast.forecastDays[index]);
                   },
-                  separatorBuilder: (context, index) => const Gap(8),
+                  separatorBuilder: (context, index) => const Gap(2),
                   itemCount: forecast.forecastDays.length,
                 ),
               ),

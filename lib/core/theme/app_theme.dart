@@ -26,7 +26,7 @@ class AppTheme {
       bodySmall: AppTextStyles.white14Bold,
 
       titleLarge: AppTextStyles.lightGrey20Bold,
-      titleMedium: AppTextStyles.white22Bold,
+      titleMedium: AppTextStyles.white18Bold,
       titleSmall: AppTextStyles.lightGrey18Regular,
     ),
 
