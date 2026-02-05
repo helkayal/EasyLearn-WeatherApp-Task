@@ -8,25 +8,32 @@ import 'package:weather_app/features/weather/widgets/top_bar.dart';
 
 class WeatherView extends StatelessWidget {
   final WeatherResponseModel model;
+  final String? backgroundImage;
+  final bool showTopBar;
 
-  const WeatherView({super.key, required this.model});
+  const WeatherView({
+    super.key,
+    required this.model,
+    this.backgroundImage,
+    this.showTopBar = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     // debugPrint(LocalStorageHelper.getAll().toString());
-    final cityImage = LocalStorageHelper.getCityImage(model.location.name);
+    final storedImage = LocalStorageHelper.getCityImage(model.location.name);
+
+    final imageProvider = backgroundImage != null
+        ? NetworkImage(backgroundImage!)
+        : storedImage != null
+        ? NetworkImage(storedImage)
+        : const AssetImage('assets/images/city_bg.jpg') as ImageProvider;
 
     return Stack(
       children: [
         /// Background image
         Positioned.fill(
-          child: Image(
-            image: cityImage != null
-                ? NetworkImage(cityImage)
-                : const AssetImage('assets/images/city_bg.jpg')
-                      as ImageProvider,
-            fit: BoxFit.cover,
-          ),
+          child: Image(image: imageProvider, fit: BoxFit.cover),
         ),
 
         /// White calming overlay
@@ -42,7 +49,7 @@ class WeatherView extends StatelessWidget {
         SafeArea(
           child: Column(
             children: [
-              const TopBar(),
+              showTopBar ? const TopBar() : Gap(10),
 
               Text(
                 model.location.name,

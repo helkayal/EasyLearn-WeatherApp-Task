@@ -4,21 +4,29 @@ import 'package:weather_app/core/helpers/local_storage_helper.dart';
 import 'package:weather_app/features/models/weather_response_model.dart';
 import 'package:weather_app/features/search/widgets/city_card.dart';
 
-class CityList extends StatelessWidget {
+class CityList extends StatefulWidget {
   const CityList({super.key});
 
+  @override
+  State<CityList> createState() => _CityListState();
+}
+
+class _CityListState extends State<CityList> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.5,
       child: ListView.separated(
         shrinkWrap: true,
-        padding: EdgeInsets.all(0),
+        padding: EdgeInsets.zero,
+        itemCount: weatherList.length,
+        separatorBuilder: (_, __) => const Gap(10),
         itemBuilder: (context, index) {
           final cityModel = weatherList[index];
+          final cityName = cityModel.location.name;
 
           return Dismissible(
-            key: ValueKey(cityModel.location.name),
+            key: ValueKey(cityName), // ✅ stable key
 
             direction: DismissDirection.endToStart,
 
@@ -34,51 +42,48 @@ class CityList extends StatelessWidget {
 
             confirmDismiss: (_) async {
               return await showDialog<bool>(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Delete city?'),
-                  content: Text('Remove ${cityModel.location.name} from list?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      child: const Text('Cancel'),
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Delete city?'),
+                      content: Text('Remove $cityName from list?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const Text(
+                            'Delete',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
                     ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, true),
-                      child: const Text(
-                        'Delete',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
-              );
+                  ) ??
+                  false;
             },
 
             onDismissed: (_) async {
-              final cityName = cityModel.location.name;
-
-              /// Remove from memory
-              weatherList.removeAt(index);
+              /// ✅ Remove by value (SAFE)
+              setState(() {
+                weatherList.removeWhere((e) => e.location.name == cityName);
+              });
 
               /// Remove from storage
               await LocalStorageHelper.deleteCity(cityName);
-
-              /// Refresh UI
-              (context as Element).markNeedsBuild();
             },
 
             child: CityCard(
-              city: weatherList[index].location.name,
-              temp: '${weatherList[index].current.tempC}°',
-              aqi: 'AQI ${weatherList[index].current.airQuality.usEpaIndex}',
+              city: cityName,
+              temp: '${cityModel.current.tempC}°',
+              aqi: 'AQI ${cityModel.current.airQuality.usEpaIndex}',
               range:
-                  '${weatherList[index].forecast.forecastDays.first.day.maxTempC}° / ${weatherList[index].forecast.forecastDays.first.day.minTempC}°',
+                  '${cityModel.forecast.forecastDays.first.day.maxTempC}° / '
+                  '${cityModel.forecast.forecastDays.first.day.minTempC}°',
             ),
           );
         },
-        separatorBuilder: (context, index) => const Gap(10),
-        itemCount: weatherList.length,
       ),
     );
   }

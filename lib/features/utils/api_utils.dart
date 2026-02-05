@@ -19,4 +19,28 @@ class ApiUtils {
     );
     weatherList.add(weather);
   }
+
+  static Future<WeatherResponseModel> fetchCityWeatherOnly({
+    required String city,
+  }) async {
+    return await ApiService.getWeather(city);
+  }
+
+  static Future<void> addCity({
+    required String city,
+    required WeatherResponseModel weather,
+    String? imageUrl,
+  }) async {
+    await LocalStorageHelper.saveLastCity(city);
+
+    if (imageUrl != null) {
+      await LocalStorageHelper.saveCityImage(city: city, imageUrl: imageUrl);
+    }
+
+    weatherList.removeWhere(
+      (e) => e.location.name.toLowerCase() == city.toLowerCase(),
+    );
+
+    weatherList.add(weather);
+  }
 }
