@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:weather_app/core/services/api_service.dart';
+import 'package:weather_app/features/cubit/weather_cubit.dart';
 import 'package:weather_app/features/models/city_search_model.dart';
 import 'package:weather_app/features/search/widgets/add_city_dialog.dart';
-import 'package:weather_app/features/utils/api_utils.dart';
 import 'package:weather_app/features/weather/screens/weather_details.dart';
 import 'package:weather_app/features/search/widgets/search_text_field.dart';
 import 'package:weather_app/features/search/widgets/city_autocomplete_options.dart';
@@ -12,6 +14,8 @@ class SearchBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<WeatherCubit>();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Autocomplete<CitySearchModel>(
@@ -27,19 +31,9 @@ class SearchBox extends StatelessWidget {
         displayStringForOption: (option) =>
             '${option.city} - ${option.country}',
 
-        // onSelected: (selection) async {
-        //   await ApiUtils.loadCityWeather(city: selection.city);
-        //   if (!context.mounted) return;
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //       builder: (_) => WeatherDetails(city: selection.city),
-        //     ),
-        //   );
-        // },
         onSelected: (selection) async {
           /// 1️⃣ Fetch weather
-          final weather = await ApiUtils.fetchCityWeatherOnly(
+          final weather = await cubit.fetchCityWeatherOnly(
             city: selection.city,
           );
 
@@ -57,7 +51,7 @@ class SearchBox extends StatelessWidget {
                 model: weather,
                 imageUrl: imageUrl, // 👈 PASS IT
                 onAdd: () async {
-                  await ApiUtils.addCity(
+                  await cubit.addCity(
                     city: selection.city,
                     weather: weather,
                     imageUrl: imageUrl, // 👈 SAVE SAME IMAGE

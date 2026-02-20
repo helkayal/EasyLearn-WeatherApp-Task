@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:weather_app/core/helpers/local_storage_helper.dart';
-import 'package:weather_app/features/models/weather_response_model.dart';
+import 'package:weather_app/features/cubit/weather_cubit.dart';
 import 'package:weather_app/features/search/widgets/city_card.dart';
 
 class CityList extends StatefulWidget {
@@ -14,6 +15,9 @@ class CityList extends StatefulWidget {
 class _CityListState extends State<CityList> {
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<WeatherCubit>();
+    final weatherList = cubit.weatherList;
+
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.5,
       child: ListView.separated(

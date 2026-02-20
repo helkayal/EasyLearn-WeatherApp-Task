@@ -1,58 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/core/helpers/local_storage_helper.dart';
-import 'package:weather_app/features/models/weather_response_model.dart';
-import 'package:weather_app/features/utils/api_utils.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/features/cubit/weather_cubit.dart';
+import 'package:weather_app/features/cubit/weather_state.dart';
 import 'package:weather_app/features/weather/widgets/weather_view.dart';
 
-class WeatherDetails extends StatefulWidget {
+class WeatherDetails extends StatelessWidget {
   final String city;
   const WeatherDetails({super.key, required this.city});
 
   @override
-  State<WeatherDetails> createState() => _WeatherDetailsState();
-}
-
-class _WeatherDetailsState extends State<WeatherDetails> {
-  WeatherResponseModel? model;
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    // debugPrint(LocalStorageHelper.getAll().toString());
-    _loadWeather();
-  }
-
-  Future<void> _loadWeather() async {
-    try {
-      /// 1️⃣ Check cache first
-      final existing = weatherList.where((e) => e.location.name == widget.city);
-
-      if (existing.isNotEmpty) {
-        model = existing.first;
-      } else {
-        /// 2️⃣ Load from API
-        await ApiUtils.loadCityWeather(city: widget.city);
-        model = weatherList.firstWhere((e) => e.location.name == widget.city);
-      }
-
-      /// 3️⃣ Save as last visited city
-      await LocalStorageHelper.saveLastCity(widget.city);
-    } catch (e) {
-      debugPrint('Weather load error: $e');
-    } finally {
-      if (mounted) {
-        setState(() => isLoading = false);
-      }
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (isLoading || model == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<WeatherCubit>().loadWeather(city: city);
+    });
 
-    return Scaffold(body: WeatherView(model: model!));
+    return Scaffold(
+      body: BlocBuilder<WeatherCubit, WeatherState>(
+        builder: (context, state) {
+          if (state is WeatherLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is WeatherError) {
+            return Center(
+              child: Text(
+                state.message,
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+            );
+          } else if (state is WeatherLoaded) {
+            return WeatherView(model: state.weatherModel);
+          }
+          return SizedBox.shrink();
+        },
+      ),
+    );
   }
 }

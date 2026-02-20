@@ -69,4 +69,10 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.lightGreyColor,
   );
+
+  static const red18Regular = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w400,
+    color: AppColors.errorColor,
+  );
 }

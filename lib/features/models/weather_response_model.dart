@@ -30,5 +30,3 @@ class LocationModel {
     return LocationModel(name: json['name'] as String);
   }
 }
-
-List<WeatherResponseModel> weatherList = [];

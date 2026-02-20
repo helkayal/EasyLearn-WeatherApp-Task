@@ -28,6 +28,8 @@ class AppTheme {
       titleLarge: AppTextStyles.lightGrey20Bold,
       titleMedium: AppTextStyles.white18Bold,
       titleSmall: AppTextStyles.lightGrey18Regular,
+
+      labelLarge: AppTextStyles.red18Regular,
     ),
 
     colorScheme: const ColorScheme.light(
